@@ -2,6 +2,9 @@ version: '3.8'
 
 services:
   dots-ocr-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: dots-ocr:latest
     container_name: dots-ocr-container
     ports:
@@ -10,7 +13,7 @@ services:
       #download model to local，model url：https://www.modelscope.cn/models/rednote-hilab/dots.ocr
       - ./model/dots.ocr:/workspace/weights/DotsOCR
     environment:
-      - PYTHONPATH=/workspace/weights:$PYTHONPATH
+      - PYTHONPATH=/workspace/weights:${PYTHONPATH:-}
     deploy:
       resources:
         reservations:
@@ -38,7 +41,3 @@ services:
             --chat-template-content-format string \
             --served-model-name dotsocr-model \
             --trust-remote-code
-
-
-
-
